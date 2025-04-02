@@ -3,33 +3,7 @@ This script provides functionality to downscale Kubernetes deployments.
 It restricts scaling operations to the 'sec' (Secondary RIG) environment.
 """
 
-from utils.k8s_helpers import get_deployments, scale_deployment, get_current_context, validate_context, get_all_contexts
-
-def select_context():
-    """
-    Display available contexts and allow the user to select one by number.
-    """
-    contexts = get_all_contexts()
-    if not contexts:
-        print("No Kubernetes contexts found.")
-        return None
-
-    print("\nAvailable Kubernetes contexts:")
-    for i, context in enumerate(contexts, start=1):
-        print(f"{i}. {context}")
-
-    try:
-        choice = int(input("\nSelect a context by number (default is current context or 'sec'): ") or 0)
-        if choice == 0:
-            return get_current_context() or "sec"
-        if 1 <= choice <= len(contexts):
-            return contexts[choice - 1]
-        else:
-            print("Invalid choice. Please select a valid number.")
-            return None
-    except ValueError:
-        print("Invalid input. Please enter a number.")
-        return None
+from utils.k8s_helpers import get_deployments, scale_deployment, validate_context, select_context
 
 def downscale_deployments(context, deployments_to_downscale, replicas=1):
     """
@@ -48,7 +22,7 @@ def main():
 
     # Restrict scaling operations to 'sec' environment
     if context != "sec":
-        print(f"Error: Scaling operations are restricted to the 'sec' (Secondary RIG) environment.")
+        print(f"Error: Scaling operations are restricted to the 'sec' (Secondary RIG) environment.\nMoidfy code to allow deletion in other environments.")
         return
 
     # Validate the context

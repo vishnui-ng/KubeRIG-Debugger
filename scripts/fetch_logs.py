@@ -7,33 +7,7 @@ the logs to files in a user-specified directory.
 import os
 from datetime import datetime
 import pytz
-from utils.k8s_helpers import get_deployments, get_pods, fetch_logs, get_current_context, validate_context, get_all_contexts
-
-def select_context():
-    """
-    Display available contexts and allow the user to select one by number.
-    """
-    contexts = get_all_contexts()
-    if not contexts:
-        print("No Kubernetes contexts found.")
-        return None
-
-    print("\nAvailable Kubernetes contexts:")
-    for i, context in enumerate(contexts, start=1):
-        print(f"{i}. {context}")
-
-    try:
-        choice = int(input("\nSelect a context by number (default is current context or 'sec'): ") or 0)
-        if choice == 0:
-            return get_current_context() or "sec"
-        if 1 <= choice <= len(contexts):
-            return contexts[choice - 1]
-        else:
-            print("Invalid choice. Please select a valid number.")
-            return None
-    except ValueError:
-        print("Invalid input. Please enter a number.")
-        return None
+from utils.k8s_helpers import get_deployments, get_pods, fetch_logs, validate_context, select_context
 
 def fetch_logs_for_deployments(context, base_output_dir="logs"):
     """

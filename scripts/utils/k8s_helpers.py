@@ -111,3 +111,44 @@ def get_all_contexts():
         return result.stdout.strip().split()
     except subprocess.CalledProcessError:
         return []
+
+def delete_pod(context, pod_name):
+    """
+    Delete a specific pod in the given Kubernetes context.
+    """
+    try:
+        subprocess.run(
+            ["kubectl", "--context", context, "delete", "pod", pod_name],
+            check=True
+        )
+        print(f"Successfully deleted pod {pod_name}.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error deleting pod {pod_name}: {e.stderr}")
+
+def select_context(default_context="sec"):
+    """
+    Display available contexts and allow the user to select one by number.
+    Default to the specified default_context if no input is provided.
+    """
+    contexts = get_all_contexts()
+    if not contexts:
+        print("No Kubernetes contexts found.")
+        return None
+
+    print("\nAvailable Kubernetes contexts:")
+    for i, context in enumerate(contexts, start=1):
+        print(f"{i}. {context}")
+    print(f"0. Default to '{default_context}'")
+
+    try:
+        choice = int(input(f"\nSelect a context by number (default is '{default_context}'): ") or 0)
+        if choice == 0:
+            return default_context
+        if 1 <= choice <= len(contexts):
+            return contexts[choice - 1]
+        else:
+            print("Invalid choice.")
+            return None
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+        return None

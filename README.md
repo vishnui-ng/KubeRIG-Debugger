@@ -1,8 +1,9 @@
 # KubeRIG Debugger
 
-This project provides two scripts for managing Kubernetes deployments:
+This project provides three scripts for managing Kubernetes deployments:
 1. **Downscale Deployments**: Scale down selected deployments to a specified number of replicas (restricted to the `sec` - Secondary RIG/environment).
 2. **Fetch Logs**: Fetch logs from selected deployments and organize them in a structured folder hierarchy.
+3. **Delete Pods**: Delete all pods under a deployment or specific pods interactively (restricted to the `sec` environment).
 
 ---
 
@@ -13,6 +14,7 @@ This project is designed for personal use in the `sec` (Secondary RIG) environme
 ### Restrictions:
 - **Scaling Operations**: The `scale_down.py` script is restricted to the `sec` environment. Users should not modify other environments (e.g., `dest`, `source`) unless absolutely necessary.
 - **Log Retrieval**: The `fetch_logs.py` script can be used to pull logs from any environment.
+- **Pod Deletion**: The `delete_pods.py` script is restricted to the `sec` environment.
 
 ---
 
@@ -24,6 +26,7 @@ KubeRIG-Debugger/
 ├── scripts/
 │   ├── scale_down.py
 │   ├── fetch_logs.py
+│   ├── delete_pods.py
 │   └── utils/
 │       └── k8s_helpers.py
 │
@@ -93,6 +96,22 @@ Follow the interactive prompts:
 - Select the Kubernetes context by number.
 - Choose the deployments to fetch logs from.
 - Specify the directory to save logs (default is `logs`).
+
+---
+
+### 3. Delete Pods
+
+This script allows you to delete all pods under a deployment or specific pods interactively. **Pod deletion operations are restricted to the `sec` environment.**
+
+Run the script:
+```bash
+python scripts/delete_pods.py
+```
+
+Follow the interactive prompts:
+- Select the Kubernetes context by number.
+- Choose the deployments to delete pods from.
+- Choose to delete all pods or specific pods.
 
 ---
 
@@ -200,4 +219,4 @@ __pycache__/
 
 ## Conclusion
 
-**KubeRIG Debugger** provides two interactive scripts for managing Kubernetes deployments. The downscale script allows you to scale down deployments in the `sec` environment, while the log-fetching script retrieves logs and organizes them in a structured folder hierarchy. Ensure you have the necessary permissions and kubeconfig set up to interact with your Kubernetes cluster.
+**KubeRIG Debugger** provides three interactive scripts for managing Kubernetes deployments. The downscale script allows you to scale down deployments in the `sec` environment, the log-fetching script retrieves logs and organizes them in a structured folder hierarchy, and the pod deletion script allows you to delete pods interactively. Ensure you have the necessary permissions and kubeconfig set up to interact with your Kubernetes cluster.s
